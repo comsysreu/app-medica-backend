@@ -1,10 +1,10 @@
 export class LoginDto {
-    readonly _id: string;
+    readonly _id: Object;
     readonly name: string;
-    // readonly lastName: number;
-    // readonly gerder: boolean;
-    // readonly user: string;
-    // readonly email: string;
-    // readonly password: string;
-    // readonly type_user: boolean;
+    readonly lastName: string;
+    readonly gerder: boolean;
+    readonly userName: string;
+    readonly email: string;
+    readonly password: string;
+    readonly type_user: boolean;
 }

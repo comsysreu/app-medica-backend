@@ -1,12 +1,12 @@
 import * as mongoose from 'mongoose';
 
 export const LoginSchema = new mongoose.Schema({
-    _id: String,
+    _id: Object,
     name: String,
-    /*lastName: Number,
+    lastName: String,
     gerder: Boolean,
-    user: String,
+    userName: String,
     email: String,
     password: String,
-    type_user: Boolean,*/
+    type_user: Boolean,
 });
