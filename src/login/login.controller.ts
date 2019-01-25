@@ -1,6 +1,7 @@
 import { Controller, Get, Post, Put, Body, Req, Param, Delete } from '@nestjs/common';
 import { LoginService } from './login.service';
 import { LoginDto } from './dto/login.dto';
+import { ObjectId } from "bson";
 
 @Controller('api/login')
 export class LoginController {
@@ -22,7 +23,7 @@ export class LoginController {
     @Get(':id')
     async findById(@Param('id') id) {
         return this.loginService
-            .findById(id)
+            .findById(ObjectId(id))
             .then(response => {
                 return response;
             })
@@ -45,6 +46,7 @@ export class LoginController {
 
     @Post()
     async create(@Req() request, @Body() loginDto: LoginDto) {
+        loginDto._id = new ObjectId();
         return this.loginService
             .create(loginDto)
             .then(response => {
@@ -57,6 +59,7 @@ export class LoginController {
 
     @Put()
     async update(@Req() request, @Body() loginDto: LoginDto) {
+        loginDto._id = ObjectId(loginDto._id);
         return this.loginService
             .updateById(loginDto)
             .then(response => {
@@ -70,7 +73,7 @@ export class LoginController {
     @Delete(':id')
     async deleteById(@Param('id') id) {
         return this.loginService
-            .deleteById(id)
+            .deleteById(ObjectId(id))
             .then(response => {
                 return response;
             })

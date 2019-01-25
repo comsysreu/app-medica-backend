@@ -1,5 +1,7 @@
+import { ObjectId } from "bson";
+
 export class LoginDto {
-    readonly _id: Object;
+    _id: ObjectId;
     readonly name: string;
     readonly lastName: string;
     readonly gerder: boolean;

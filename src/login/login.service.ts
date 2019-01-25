@@ -25,12 +25,11 @@ export class LoginService {
   }
 
   async updateById(loginDto: LoginDto): Promise<LoginInterface[]> {
-    const createUser = new this.loginModel(loginDto);
-    return await this.loginModel.findByIdAndUpdate(createUser).exec();
+    return await this.loginModel.find({_id: loginDto._id}).updateOne(loginDto).exec();
   }
 
   async deleteById(id: string): Promise<LoginInterface[]> {
-    return await this.loginModel.find({_id: id}).remove().exec();
+    return await this.loginModel.find({_id: id}).deleteOne().exec();
   }
 
 }
