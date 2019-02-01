@@ -9,4 +9,8 @@ export const LoginSchema = new mongoose.Schema({
     email: String,
     password: String,
     type_user: Boolean,
+    age: Number,
+    mobile: Number,
+    dateCreation: Date,
+    dateModification: Date,
 });

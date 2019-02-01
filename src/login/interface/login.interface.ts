@@ -3,11 +3,15 @@ import { ObjectId } from "bson";
 
 export interface LoginInterface extends Document {
   readonly _id: ObjectId;
-  readonly name: string;
+  readonly name: String;
   readonly lastName: String;
-  readonly gerder: boolean;
-  readonly userName: string;
-  readonly email: string;
-  readonly password: string;
-  readonly type_user: boolean;
+  readonly gerder: Boolean;
+  readonly userName: String;
+  readonly email: String;
+  readonly password: String;
+  readonly type_user: Boolean;
+  readonly age: Number;
+  readonly mobile: Number;
+  readonly dateCreation: Date;
+  readonly dateModification: Date;
 }

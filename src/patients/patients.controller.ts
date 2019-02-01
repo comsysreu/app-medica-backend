@@ -1,16 +1,16 @@
 import { Controller, Get, Post, Put, Body, Req, Param, Delete } from '@nestjs/common';
-import { LoginService } from './login.service';
-import { LoginDto } from './dto/login.dto';
+import { PatientsService } from './patients.service';
+import { PatientsDto } from './dto/patients.dto';
 import { ObjectId } from "bson";
 
-@Controller('api/login')
-export class LoginController {
+@Controller('api/patients')
+export class PatientsController {
 
-    constructor(private readonly loginService: LoginService) { }
+    constructor(private readonly patientsService: PatientsService) { }
 
     @Get()
     async findAll() {
-        return this.loginService
+        return this.patientsService
             .findAll()
             .then(response => {
                 return response;
@@ -22,20 +22,8 @@ export class LoginController {
 
     @Get(':id')
     async findById(@Param('id') id) {
-        return this.loginService
+        return this.patientsService
             .findById(ObjectId(id))
-            .then(response => {
-                return response;
-            })
-            .catch(error => {
-                return error;
-            });
-    }
-    
-    @Get('userName/:name')
-    async findByUserName(@Param('name') name) {
-        return this.loginService
-            .findByUserName(name)
             .then(response => {
                 return response;
             })
@@ -45,10 +33,11 @@ export class LoginController {
     }
 
     @Post()
-    async create(@Req() request, @Body() loginDto: LoginDto) {
-        loginDto._id = new ObjectId();
-        return this.loginService
-            .create(loginDto)
+    async create(@Req() request, @Body() patientsDto: PatientsDto) {
+        patientsDto._id = new ObjectId();
+        patientsDto.userId = ObjectId(patientsDto.userId);
+        return this.patientsService
+            .create(patientsDto)
             .then(response => {
                 return response;
             })
@@ -58,10 +47,11 @@ export class LoginController {
     }
 
     @Put()
-    async update(@Req() request, @Body() loginDto: LoginDto) {
-        loginDto._id = ObjectId(loginDto._id);
-        return this.loginService
-            .updateById(loginDto)
+    async update(@Req() request, @Body() patientsDto: PatientsDto) {
+        patientsDto._id = ObjectId(patientsDto._id);
+        patientsDto.userId = ObjectId(patientsDto.userId);
+        return this.patientsService
+            .updateById(patientsDto)
             .then(response => {
                 return response;
             })
@@ -72,7 +62,7 @@ export class LoginController {
 
     @Delete(':id')
     async deleteById(@Param('id') id) {
-        return this.loginService
+        return this.patientsService
             .deleteById(ObjectId(id))
             .then(response => {
                 return response;
