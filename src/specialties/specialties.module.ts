@@ -6,6 +6,7 @@ import { SpecialtiesProviders } from './specialties.provider';
 
 @Module({
   imports: [DatabaseModule],
+  exports:  [SpecialtiesService, ...SpecialtiesProviders],
   controllers: [SpecialtiesController],
   providers: [SpecialtiesService, ...SpecialtiesProviders],
 })

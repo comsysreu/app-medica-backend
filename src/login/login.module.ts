@@ -6,6 +6,7 @@ import { LoginProviders } from './login.provider';
 
 @Module({
   imports: [DatabaseModule],
+  exports: [LoginService, ...LoginProviders],
   controllers: [LoginController],
   providers: [LoginService, ...LoginProviders],
 })

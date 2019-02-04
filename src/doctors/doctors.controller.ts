@@ -2,16 +2,21 @@ import { Controller, Get, Post, Put, Body, Req, Param, Delete } from '@nestjs/co
 import { DoctorsService } from './doctors.service';
 import { DoctorsDto } from './dto/doctors.dto';
 import { ObjectId } from "bson";
+import { LoginService } from './../login/login.service';
+import { SpecialtiesService } from './../specialties/specialties.service';
 
 @Controller('api/doctors')
 export class DoctorsController {
 
-    constructor(private readonly doctorsService: DoctorsService) { }
+    constructor(
+        private readonly doctorsService: DoctorsService,
+        private readonly loginService: LoginService,
+        private readonly specialtiesService: SpecialtiesService
+    ) { }
 
     @Get()
     async findAll() {
-        return this.doctorsService
-            .findAll()
+        return this.loginService.findAllDoctors()
             .then(response => {
                 return response;
             })
@@ -20,12 +25,90 @@ export class DoctorsController {
             });
     }
 
+    /* @Get()
+    async findAll() {
+        let responseData = [];
+        return this.loginService.findAllDoctors()
+            .then(response => {
+                for (let i in response) {
+                     this.doctorsService.findByIdUser(response[i]._id)
+                        .then(responseDoctor => {
+                            responseData.push(
+                                {
+                                    user: response[i],
+                                    doctor: responseDoctor[0]
+                                }
+                            )
+                            
+                            if(response.length -1 == +i ){
+                                console.log(responseData);
+                                return responseData;
+                            }
+                        })
+                        .catch(error => {
+                            return error
+                        });
+                }
+            })
+            .catch(error => {
+                return error;
+            });
+    } */
+
     @Get(':id')
     async findById(@Param('id') id) {
         return this.doctorsService
             .findById(ObjectId(id))
-            .then(response => {
-                return response;
+            .then(responseDoctor => {
+                return this.loginService
+                    .findById(ObjectId(responseDoctor[0].userId))
+                    .then(responseUser => {
+                        return this.specialtiesService
+                            .findById(ObjectId(responseDoctor[0].specialtiesId))
+                            .then(responseSpecialties => {
+                                return {
+                                    user: responseUser[0],
+                                    doctor: responseDoctor[0],
+                                    specialties: responseSpecialties[0]
+                                }
+                            })
+                            .catch(error => {
+                                return error;
+                            })
+                    })
+                    .catch(error => {
+                        return error;
+                    });
+            })
+            .catch(error => {
+                return error;
+            });
+    }
+
+    @Get('user/:id')
+    async findByDoctor(@Param('id') id) {
+        return this.loginService
+            .findById(ObjectId(id))
+            .then(responseUser => {
+                return this.doctorsService
+                    .findByIdUser(ObjectId(id))
+                    .then(responseDoctor => {
+                        return this.specialtiesService
+                            .findById(ObjectId(responseDoctor[0].specialtiesId))
+                            .then(responseSpecialties => {
+                                return {
+                                    user: responseUser[0],
+                                    doctor: responseDoctor[0],
+                                    specialties: responseSpecialties[0]
+                                }
+                            })
+                            .catch(error => {
+                                return error;
+                            })
+                    })
+                    .catch(error => {
+                        return error;
+                    });
             })
             .catch(error => {
                 return error;

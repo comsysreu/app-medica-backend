@@ -20,6 +20,10 @@ export class PatientsService {
     return await this.patientsModel.find({_id: id}).exec();
   }
 
+  async findByIdUser(id: string): Promise<PatientsInterface[]> {
+    return await this.patientsModel.find({userId: id}).exec();
+  }
+
   async updateById(patientsDto: PatientsDto): Promise<PatientsInterface[]> {
     return await this.patientsModel.find({_id: patientsDto._id}).updateOne(patientsDto).exec();
   }

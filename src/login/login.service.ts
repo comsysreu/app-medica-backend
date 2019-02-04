@@ -16,6 +16,14 @@ export class LoginService {
     return await this.loginModel.find().exec();
   }
 
+  async findAllDoctors(): Promise<LoginInterface[]> {
+    return await this.loginModel.find({type_user: true}).exec();
+  }
+
+  async findAllPatients(): Promise<LoginInterface[]> {
+    return await this.loginModel.find({type_user: false}).exec();
+  }
+
   async findById(id: string): Promise<LoginInterface[]> {
     return await this.loginModel.find({_id: id}).exec();
   }
